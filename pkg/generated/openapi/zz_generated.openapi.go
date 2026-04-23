@@ -66082,6 +66082,14 @@ func schema_k8sio_cloud_provider_config_v1alpha1_KubeCloudSharedConfiguration(re
 							Ref:         ref(metav1.Duration{}.OpenAPIModelName()),
 						},
 					},
+					"NodeMonitorWorkers": {
+						SchemaProps: spec.SchemaProps{
+							Description: "nodeMonitorWorkers is the number of workers for syncing NodeStatus in NodeController.",
+							Default:     0,
+							Type:        []string{"integer"},
+							Format:      "int32",
+						},
+					},
 					"ClusterName": {
 						SchemaProps: spec.SchemaProps{
 							Description: "clusterName is the instance prefix for the cluster.",
@@ -66128,7 +66136,7 @@ func schema_k8sio_cloud_provider_config_v1alpha1_KubeCloudSharedConfiguration(re
 						},
 					},
 				},
-				Required: []string{"CloudProvider", "ExternalCloudVolumePlugin", "UseServiceAccountCredentials", "AllowUntaggedCloud", "RouteReconciliationPeriod", "NodeMonitorPeriod", "ClusterName", "ClusterCIDR", "AllocateNodeCIDRs", "CIDRAllocatorType", "ConfigureCloudRoutes", "NodeSyncPeriod"},
+				Required: []string{"CloudProvider", "ExternalCloudVolumePlugin", "UseServiceAccountCredentials", "AllowUntaggedCloud", "RouteReconciliationPeriod", "NodeMonitorPeriod", "NodeMonitorWorkers", "ClusterName", "ClusterCIDR", "AllocateNodeCIDRs", "CIDRAllocatorType", "ConfigureCloudRoutes", "NodeSyncPeriod"},
 			},
 		},
 		Dependencies: []string{

@@ -60,6 +60,8 @@ func (o *KubeCloudSharedOptions) AddFlags(fs *pflag.FlagSet) {
 	fs.DurationVar(&o.RouteReconciliationPeriod.Duration, "route-reconciliation-period", o.RouteReconciliationPeriod.Duration, "The period for reconciling routes created for Nodes by cloud provider.")
 	fs.DurationVar(&o.NodeMonitorPeriod.Duration, "node-monitor-period", o.NodeMonitorPeriod.Duration,
 		fmt.Sprintf("The period for syncing NodeStatus in %s.", names.CloudNodeLifecycleController))
+	fs.IntVar(&o.NodeMonitorWorkers, "cloud-node-lifecycle-monitor-nodes-workers", o.NodeMonitorWorkers,
+		fmt.Sprintf("The number of workers for syncing NodeStatus in %s.", names.CloudNodeLifecycleController))
 	fs.StringVar(&o.ClusterName, "cluster-name", o.ClusterName, "The instance prefix for the cluster.")
 	fs.StringVar(&o.ClusterCIDR, "cluster-cidr", o.ClusterCIDR, "CIDR Range for Pods in cluster. Only used when --allocate-node-cidrs=true; if false, this option will be ignored.")
 	fs.BoolVar(&o.AllocateNodeCIDRs, "allocate-node-cidrs", false, "Should CIDRs for Pods be allocated and set on the cloud provider. Requires --cluster-cidr.")
@@ -87,6 +89,7 @@ func (o *KubeCloudSharedOptions) ApplyTo(cfg *cpconfig.KubeCloudSharedConfigurat
 	cfg.AllowUntaggedCloud = o.AllowUntaggedCloud
 	cfg.RouteReconciliationPeriod = o.RouteReconciliationPeriod
 	cfg.NodeMonitorPeriod = o.NodeMonitorPeriod
+	cfg.NodeMonitorWorkers = o.NodeMonitorWorkers
 	cfg.ClusterName = o.ClusterName
 	cfg.ClusterCIDR = o.ClusterCIDR
 	cfg.AllocateNodeCIDRs = o.AllocateNodeCIDRs
@@ -105,6 +108,10 @@ func (o *KubeCloudSharedOptions) Validate() []error {
 
 	errs := []error{}
 	errs = append(errs, o.CloudProvider.Validate()...)
+
+	if o.NodeMonitorWorkers < 1 {
+		errs = append(errs, fmt.Errorf("cloud-node-lifecycle-monitor-nodes-workers must be at least 1, but got %d", o.NodeMonitorWorkers))
+	}
 
 	return errs
 }

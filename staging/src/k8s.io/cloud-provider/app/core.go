@@ -68,6 +68,7 @@ func startCloudNodeLifecycleController(ctx context.Context, initContext Controll
 		completedConfig.ClientBuilder.ClientOrDie(initContext.ClientName),
 		cloud,
 		completedConfig.ComponentConfig.KubeCloudShared.NodeMonitorPeriod.Duration,
+		completedConfig.ComponentConfig.KubeCloudShared.NodeMonitorWorkers,
 	)
 	if err != nil {
 		klog.Warningf("failed to start cloud node lifecycle controller: %s", err)

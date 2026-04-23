@@ -67,6 +67,8 @@ type KubeCloudSharedConfiguration struct {
 	RouteReconciliationPeriod metav1.Duration
 	// nodeMonitorPeriod is the period for syncing NodeStatus in CloudNodeLifecycleController.
 	NodeMonitorPeriod metav1.Duration
+	// nodeMonitorWorkers is the number of workers for syncing NodeStatus in CloudNodeLifecycleController.
+	NodeMonitorWorkers int
 	// clusterName is the instance prefix for the cluster.
 	ClusterName string
 	// clusterCIDR is CIDR Range for Pods in cluster.
